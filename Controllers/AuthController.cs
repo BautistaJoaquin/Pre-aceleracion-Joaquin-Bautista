@@ -71,7 +71,7 @@ namespace preAceleracionDisney.Controllers
             if (!await _roleManager.RoleExistsAsync("Admin"))
                 await _roleManager.CreateAsync(new IdentityRole("Admin"));
 
-            await _userManager.AddToRoleAsync(user, "User");
+            await _userManager.AddToRoleAsync(user, "Admin");
             return Ok(new
             {
                 Status = "Ok",
@@ -111,6 +111,13 @@ namespace preAceleracionDisney.Controllers
                 });
 
             }
+            if (!await _roleManager.RoleExistsAsync("User"))
+                await _roleManager.CreateAsync(new IdentityRole("User"));
+
+            if (!await _roleManager.RoleExistsAsync("Admin"))
+                await _roleManager.CreateAsync(new IdentityRole("Admin"));
+
+            await _userManager.AddToRoleAsync(user, "User");
 
             await _mailService.SendEmail(user);
             return Ok(new
@@ -124,6 +131,7 @@ namespace preAceleracionDisney.Controllers
         [Route("login")]
         public async Task<IActionResult> Login(LoginRequestViewModel model)
         {
+
             var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, isPersistent: false, lockoutOnFailure: false);
             if (result.Succeeded)
             {
@@ -131,31 +139,9 @@ namespace preAceleracionDisney.Controllers
 
                 if (currentUser.IsActive)
                 {
-                    var currentRoles = await _userManager.GetRolesAsync(currentUser);
+                    //Generar el token con un metodo
+                    return Ok(await GetToken(currentUser));
 
-                    var authClaims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, currentUser.UserName),
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                    };
-
-                    authClaims.AddRange(currentRoles.Select(x => new Claim(ClaimTypes.Role, x)));
-
-                    var authSignInKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("KeysuperseguraparalaApp"));
-
-                    //Se genera un token
-                    var token = new JwtSecurityToken(
-                        issuer: "https://localhost:5001",
-                        audience: "https://localhost:5001",
-                        expires: DateTime.Now.AddHours(1),
-                        claims: authClaims,
-                        signingCredentials: new SigningCredentials(authSignInKey, SecurityAlgorithms.HmacSha256));
-
-                    return Ok(new
-                    {
-                        Token = new JwtSecurityTokenHandler().WriteToken(token),
-                        ValidTo = token.ValidTo
-                    });
                 }
             }
             return BadRequest(new
@@ -163,6 +149,38 @@ namespace preAceleracionDisney.Controllers
                 Status = "Error",
                 Message = $"Login failed for user with username {model.Username}"
             });
+        }
+
+        //GetToke: Metodo que genera un token al loguear
+        private async Task<LoginResponseViewModel> GetToken(User currentUser)
+        {
+            var userRoles = await _userManager.GetRolesAsync(currentUser);
+
+            var authClaims = new List<Claim>()
+            {
+                new Claim (ClaimTypes.Name,currentUser.UserName),
+                new Claim (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+
+            
+            authClaims.AddRange(userRoles.Select(x => new Claim(ClaimTypes.Role, x)));
+
+            //levantamos nuestro signin key
+            var authSignInKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("KeySecretaSuperLargaDeAutorizacion"));
+
+            //creo el token
+            var token = new JwtSecurityToken(
+                issuer: "https://localhost:5001",
+                audience: "https://localhost:5001",
+                expires: DateTime.Now.AddHours(1),
+                claims: authClaims,
+                signingCredentials: new SigningCredentials(authSignInKey, SecurityAlgorithms.HmacSha256));
+
+            return new LoginResponseViewModel
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                ValidTo = token.ValidTo
+            };
         }
     }
 }

@@ -19,6 +19,6 @@ namespace preAceleracionDisney.Entities
 
         //Relaciones
         public Gender genders { get; set; }
-        public ICollection<Character> characters { get; set; }
+        public ICollection<Character> Characters { get; set; }
     }
 }

@@ -18,13 +18,11 @@
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="5.0.10" />
     <PackageReference Include="SendGrid" Version="9.24.3" />
     <PackageReference Include="SendGrid.Extensions.DependencyInjection" Version="1.0.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.2" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="ViewModels\Genders\Detail\" />
-    <Folder Include="ViewModels\Characters\Detail\" />
-    <Folder Include="ViewModels\Movies\Detail\" />
   </ItemGroup>
 
 </Project>

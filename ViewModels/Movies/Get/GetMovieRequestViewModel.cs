@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace preAceleracionDisney.ViewModels.Movies.Get
 {
-    public class GetRequestViewModel
+    public class GetMovieRequestViewModel
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Ingresa una Imagen para la pelicula.")]
         public string Image { get; set; }
 

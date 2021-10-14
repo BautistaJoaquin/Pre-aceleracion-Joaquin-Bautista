@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace preAceleracionDisney.ViewModels.Movies.Post
 {
-    public class PostRequestViewModel
+    public class PostMovieRequestViewModel
     {
         public int Id { get; set; }
 

@@ -1,11 +1,11 @@
-﻿using System;
+﻿
+using preAceleracionDisney.ViewModels.Characters.Get;
+using preAceleracionDisney.ViewModels.Movies.Detail;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace preAceleracionDisney.ViewModels.Characters.Get
+namespace preAceleracionDisney.ViewModels.Characters.Detail
 {
-    public class GetResponseViewModel
+    public class DetailCharacterViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -13,5 +13,6 @@ namespace preAceleracionDisney.ViewModels.Characters.Get
         public int Age { get; set; }
         public float Weight { get; set; }
         public string History { get; set; }
+        public List<MoviesViewModel> Movies { get; set; }
     }
 }

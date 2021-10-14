@@ -47,23 +47,30 @@ namespace preAceleracionDisney.Controllers
         [HttpPost]
         public IActionResult Post(Gender gender)
         {
-            _context.Genders.Add(gender);
+            Gender newGender = new Gender
+            {
+                Id = gender.Id,
+                Image = gender.Image,
+                Name = gender.Name
+            };
+
+            _context.Genders.Add(newGender);
             _context.SaveChanges();
-            return Ok(_context.Genders.ToList());
+            return Ok();
         }
 
         [HttpPut]
         public IActionResult Put(Gender gender)
         {
-            if (_context.Genders.FirstOrDefault(x => x.Id == gender.Id) == null) return BadRequest("El genero enviado no existe");
+            var oGender = _genderRepository.Get(gender.Id);
+            if (oGender == null) return BadRequest(error: $"El género {gender.Id} no existe");
 
-            var InternalGender = _context.Genders.Find(gender.Id);
+            oGender.Name = gender.Name;
+            oGender.Image = gender.Image;
+           
+            _genderRepository.Update(oGender);
 
-            InternalGender.Image = gender.Image;
-            InternalGender.Name = gender.Name;
-         
-            _context.SaveChanges();
-            return Ok(_context.Genders.ToList());
+            return Ok();
         }
 
         [HttpDelete]

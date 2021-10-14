@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace preAceleracionDisney.Repositories
 {
-    public interface IMovieRepository
+    public interface IMovieRepository : IBaseRepository<Movie>
     {
         Movie AddMovie(Movie movie);
         List<Movie> GetAllMovies();

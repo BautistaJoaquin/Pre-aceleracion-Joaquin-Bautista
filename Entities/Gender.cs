@@ -13,6 +13,6 @@ namespace preAceleracionDisney.Entities
 
         public string Image { get; set; }
 
-        public ICollection<Movie> movies { get; set; }
+        public ICollection<Movie> Movies { get; set; }
     }
 }

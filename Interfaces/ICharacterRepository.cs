@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace preAceleracionDisney.Repositories
 {
-    public interface ICharacterRepository
+    public interface ICharacterRepository : IBaseRepository<Character>
     {
         Character AddCharacter(Character character);
         List<Character> GetAllCharacters();

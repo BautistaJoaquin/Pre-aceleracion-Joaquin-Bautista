@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace preAceleracionDisney.ViewModels.Characters.Get
 {
-    public class GetRequestViewModel
+    public class GetCharacterRequestViewModel
     {
         [Required(ErrorMessage = "Ingrese Nombre del Personaje.")]
         [MaxLength(10, ErrorMessage = "El nombre debe ser de 10 caracteres como max.")]
@@ -27,5 +27,7 @@ namespace preAceleracionDisney.ViewModels.Characters.Get
         [Required(ErrorMessage = "Ingresa una  Historia para el personaje.")]
         [MaxLength(255, ErrorMessage = "Puedes escribir 255 caracteres como max.")]
         public string History { get; set; }
+
+        
     }
 }
